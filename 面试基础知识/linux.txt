@@ -1,0 +1,54 @@
+【awk】
+awk内置变量
+变量	含义
+$0	当前记录（整行的记录）
+$1~$n	当前记录的第几列
+FILENAME	输入的文件名称
+NF	当前行的字段数目（Number of Fields）
+NR	当前记录所在的行号
+
+awk函数 
+函数声明	含义
+length(str)	返回str中字符的个数
+int(num)	返回num的整数部分
+index(str1, str2)	返回str2在str1中的索引，如果不存在就返回0
+split(str,arr,separator)	使用separator为分隔符，将str切分为数组保存到arr中，返回个数
+printf(fmt, args)	根据fmt格式化args，并输出结果
+
+BEGIN { command1 } pattern { awk命令 } END { command2 }
+其中 BEGIN中的command1，会在读入第一行之前执行，并且只执行一次。接着循环执行中间的awk命令，然后END后面的command2，会在文件所有行都读完之后，并执行一次command2。
+
+【查看内容】
+（1）统计(行号、单词数、字节数)：
+    wc 命令 - c 统计字节数 - l 统计行数 - w 统计字数。
+（2）查询
+    find /home  -name "*.t?t"   *表示通配任意个字符  ？表示通配单个字符
+    find / -type p
+    find  / -size  +10M
+    find /var -perm 777
+（3）查看可执行文件的位置
+	which 可执行文件名称
+	$ which pwd
+    /bin/pwd
+（4）利用 ps 怎么显示所有的进程? 怎么利用 ps 查看指定进程的信息？
+		ps -ef (system v 输出) 
+    ps -aux bsd 格式输出
+    ps -ef | grep pid
+（5）使用什么命令查看用过的命令列表?
+    History
+（6）netstat
+    $ netstat -ant #禁用反向域名解析，加快查询速度
+    $ netstat -tnl #只列出监听中的连接
+    小技巧： netstat -lnt | grep ssh | wc -l -->只要大于2个，ssh服务就是好的
+（7）grep
+    grep -v反向查找
+    grep -r 匹配内容 目录，以递归的方式查找此目录及子目录下文件的内容
+|查看文件内容|
+    查看关键字前后5行的内容 grep -C 5 NullPointerException start.log
+    查看关键字后面5行的内容 grep -A 5 NullPointerException start.log
+    查看关键字前面5行的内容 grep -B 5 NullPointerException start.log 
+    tail -f -n 1000 日志文件 （实时打印最新的日志信息）
+   结合awk和wc命令
+    ps -ef | grep java | awk '{print $2}'  : 可以显示出所有Java进程的pid，
+    awk中可以默认使用空白分隔符，可以使用awk -F，指定分隔符，其中$2就是分割后输出第二个字符串
+    ps -ef | grep java | awk '{print $2}' | wc -l  : 可以统计当前一共有多少Java进程
