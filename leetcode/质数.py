@@ -12,4 +12,6 @@ def func_get_prime(n):
         n -= 1
 
 
+
+
 print(func_get_prime(100))
