@@ -4,34 +4,14 @@ class Solution:
     def printMatrix(self, matrix):
         # write code here
         res = []
-        if not matrix: return
-        start = 0
-        row = len(matrix)
-        col = len(matrix[0])
-        while row > 2 * start and col > 2 * start:
-            res = self.helper(matrix, start, res)
-            start += 1
+        n = len(matrix)
+        m = len(matrix[0])
+        if n == 1 and m == 1:
+            res = [matrix[0][0]]
+            return res
+        for o in xrange((min(m, n) + 1) // 2):
+            [res.append(matrix[o][i]) for i in xrange(o, m - o)]
+            [res.append(matrix[j][m - 1 - o]) for j in xrange(o, n - o) if matrix[j][m - 1 - o] not in res]
+            [res.append(matrix[n - 1 - o][k]) for k in xrange(m - 1 - o, o - 1, -1) if matrix[n - 1 - o][k] not in res]
+            [res.append(matrix[l][o]) for l in xrange(n - 1 - o, o - 1, -1) if matrix[l][o] not in res]
         return res
-
-    def helper(self, matrix, start, list):
-        print(matrix)
-        endX = len(matrix[0])-start-1
-        endY = len(matrix)-start-1
-        for i in range(start, len(matrix[0]) - start):
-            list.append(matrix[start][i])
-        for j in range(start + 1, len(matrix) - start):
-            list.append(matrix[j][-1 - start])
-            # print(matrix[j][-1 - start])
-        print(matrix[endY][endX:start])
-        print(endX,endY,start)
-        for k in matrix[-1 - start][-1 - start:start]:
-            print("#######")
-            list.append(k)
-            print(matrix[-1 - start][k])
-        for m in range(len(matrix) - 2 - start, -1 + start):
-            print(matrix[m][start])
-            list.append(matrix[m][start])
-        return list
-
-
-print(Solution().printMatrix([[1, 2], [3, 4]]))
